@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'uUserManager'`, () => {
+  it(`should have as title 'UserManagerUI'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('uUserManager');
+    expect(app.title).toEqual('UserManagerUI');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('uUserManager app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('UserManagerUI app is running!');
   });
 });

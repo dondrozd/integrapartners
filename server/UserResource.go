@@ -20,11 +20,11 @@ func RegisterNewUserResource(userDAO *UserDAO, server *echo.Echo) UserResource {
 }
 
 func (resorce *UserResource) initialize(server *echo.Echo) {
-	server.GET("/users", resorce.getUsers)
-	server.GET("/users/:id", resorce.getUser)
-	server.POST("/users", resorce.addUser)
-	server.DELETE("/users/:id", resorce.deleteUser)
-	server.PUT("/users/:id", resorce.updateUser)
+	server.GET("/api/users", resorce.getUsers)
+	server.GET("/api/users/:id", resorce.getUser)
+	server.POST("/api/users", resorce.addUser)
+	server.DELETE("/api/users/:id", resorce.deleteUser)
+	server.PUT("/api/users/:id", resorce.updateUser)
 }
 
 func (a *UserResource) addUser(context echo.Context) error {

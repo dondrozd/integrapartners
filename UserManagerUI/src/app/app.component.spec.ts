@@ -26,10 +26,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('UserManagerUI');
   });
 
-  it('should render title', () => {
+  it('should render h1', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('UserManagerUI app is running!');
+    expect(compiled.querySelector('h1').textContent).toContain('User Manager');
   });
 });

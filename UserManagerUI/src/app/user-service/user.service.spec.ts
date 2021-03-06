@@ -24,7 +24,7 @@ describe('UserService', () => {
   describe('getUsers', () => {
     it('call the url to get all users', () => {
       service.getUsers().subscribe();
-      const controller = httpTestingController.expectOne("api/users");
+      const controller = httpTestingController.expectOne('api/users');
       httpTestingController.verify();
       expect(controller.request.method).toBe('GET');
     });
@@ -33,14 +33,9 @@ describe('UserService', () => {
   describe('getUser', () => {
     it('call the url to get single user', () => {
       service.getUser(1).subscribe();
-      const controller = httpTestingController.expectOne("api/users/1");
+      const controller = httpTestingController.expectOne('api/users/1');
       httpTestingController.verify();
       expect(controller.request.method).toBe('GET');
     });
   });
-
-
-
-
-
 });

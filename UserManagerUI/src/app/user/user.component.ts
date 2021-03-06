@@ -32,10 +32,19 @@ export class UserComponent implements OnInit {
 
   onClickSave(): void {
     console.log('save');
+
+
+    this.returnToUserList();
   }
+
 
   onClickCancel(): void {
     console.log('cancel');
+    this.returnToUserList();
+  }
+
+
+  private returnToUserList(): void {
     this.router.navigate(['users']);
   }
 

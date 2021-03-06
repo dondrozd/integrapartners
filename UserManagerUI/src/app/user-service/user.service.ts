@@ -16,7 +16,18 @@ export class UserService {
   }
 
   getUser(id: number): Observable<User> {
-    return this.http.get<User>(this.usersUrl + "/" + id);
+    return this.http.get<User>(this.usersUrl + '/' + id);
   }
 
+  addUser(user: User): Observable<User> {
+    return this.http.post<User>(this.usersUrl + '/' + user.id, user);
+  }
+
+  saveUser(user: User): Observable<User> {
+    return this.http.put<User>(this.usersUrl + '/' + user.id, user);
+  }
+
+  deleteUser(user: User): Observable<User> {
+    return this.http.delete<User>(this.usersUrl + '/' + user.id);
+  }
 }

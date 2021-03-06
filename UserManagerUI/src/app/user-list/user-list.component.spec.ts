@@ -3,13 +3,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserListComponent } from './user-list.component';
 import { User } from '../models/user';
-import { of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 describe('UserListComponent', () => {
   let component: UserListComponent;
   let fixture: ComponentFixture<UserListComponent>;
   let userServiceSpy: jasmine.SpyObj<UserService>;
-  let httpClientSpy: { get: jasmine.Spy };
 
   const users: User[] = [
     {id: 1, firstName: 'fnA', lastName: 'lnA', email: 'a@dn.com', userName: 'unA', status: 'A', department: 'depA'},
@@ -18,21 +17,22 @@ describe('UserListComponent', () => {
 
 
   beforeEach(async () => {
+    userServiceSpy = jasmine.createSpyObj(UserService, ['getUsers']);
     await TestBed.configureTestingModule({
       declarations: [ UserListComponent ],
-      providers: [{provide: UserService, useValue: userServiceSpy}]
+      providers: [ { provide: UserService, useValue: userServiceSpy } ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    userServiceSpy = jasmine.createSpyObj(UserService, ['getUsers']);
     fixture = TestBed.createComponent(UserListComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
+    userServiceSpy.getUsers.and.returnValue(of(users));
+    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
@@ -40,6 +40,12 @@ describe('UserListComponent', () => {
     userServiceSpy.getUsers.and.returnValue(of(users));
     fixture.detectChanges();
     expect(component).toBeTruthy();
+  });
+
+  it('should set hasError true on http error ', () => {
+    userServiceSpy.getUsers.and.returnValue(throwError({status: 500}));
+    fixture.detectChanges();
+    expect(component.hasError).toBe(true);
   });
 
 

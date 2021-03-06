@@ -1,44 +1,46 @@
-<header>
-  <h1 *ngIf="newMode">New User</h1>
-  <h1 *ngIf="!newMode">Edit User</h1>
-  <aside>
-    <button mat-stroked-button color="primary" (click)="onClickSave()">
-      <mat-icon aria-hidden="false" aria-label="Add User">save</mat-icon>
-    </button>
-    <button mat-stroked-button color="primary" (click)="onClickCancel()">
-      <mat-icon aria-hidden="false" aria-label="Add User">cancel</mat-icon>
-    </button>
-  </aside>
-</header>
+<ng-container *ngIf="user">
+  <header>
+    <h1 *ngIf="newMode">New User</h1>
+    <h1 *ngIf="!newMode">Edit User</h1>
+    <aside>
+      <button mat-stroked-button color="primary" (click)="onClickSave()">
+        <mat-icon aria-hidden="false" aria-label="Add User">save</mat-icon>
+      </button>
+      <button mat-stroked-button color="primary" (click)="onClickCancel()">
+        <mat-icon aria-hidden="false" aria-label="Add User">cancel</mat-icon>
+      </button>
+    </aside>
+  </header>
 
-<section>
-  <mat-form-field appearance="outline">
-    <mat-label>First Name</mat-label>
-    <input matInput placeholder="First Name" [(ngModel)]="user.firstName" maxlength="255">
-  </mat-form-field>
-  <br />
-  <mat-form-field appearance="outline">
-    <mat-label>Last Name</mat-label>
-    <input matInput placeholder="Last Name" [(ngModel)]="user.lastName" maxlength="255">
-  </mat-form-field>
-  <br />
-  <mat-form-field appearance="outline">
-    <mat-label>Email Address</mat-label>
-    <input matInput placeholder="person@domain.com" [(ngModel)]="user.email" maxlength="255">
-  </mat-form-field>
-  <br />
-  <mat-form-field appearance="outline">
-    <mat-label>User Name</mat-label>
-    <input matInput placeholder="User Name" [(ngModel)]="user.userName" maxlength="255">
-  </mat-form-field>
-  <br />
-  <mat-form-field appearance="outline">
-    <mat-label>Status</mat-label>
-    <input matInput placeholder="Status" [(ngModel)]="user.status" maxlength="1">
-  </mat-form-field>
-  <br />
-  <mat-form-field appearance="outline">
-    <mat-label>Department</mat-label>
-    <input matInput placeholder="Status" [(ngModel)]="user.department" maxlength="255">
-  </mat-form-field>
-</section>
+  <section>
+    <mat-form-field appearance="outline">
+      <mat-label>First Name</mat-label>
+      <input matInput placeholder="First Name" [(ngModel)]="user.firstName" maxlength="255">
+    </mat-form-field>
+    <br />
+    <mat-form-field appearance="outline">
+      <mat-label>Last Name</mat-label>
+      <input matInput placeholder="Last Name" [(ngModel)]="user.lastName" maxlength="255">
+    </mat-form-field>
+    <br />
+    <mat-form-field appearance="outline">
+      <mat-label>Email Address</mat-label>
+      <input matInput placeholder="person@domain.com" [(ngModel)]="user.email" maxlength="255">
+    </mat-form-field>
+    <br />
+    <mat-form-field appearance="outline">
+      <mat-label>User Name</mat-label>
+      <input matInput placeholder="User Name" [(ngModel)]="user.userName" maxlength="255">
+    </mat-form-field>
+    <br />
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <input matInput placeholder="Status" [(ngModel)]="user.status" maxlength="1">
+    </mat-form-field>
+    <br />
+    <mat-form-field appearance="outline">
+      <mat-label>Department</mat-label>
+      <input matInput placeholder="Status" [(ngModel)]="user.department" maxlength="255">
+    </mat-form-field>
+  </section>
+</ng-container>

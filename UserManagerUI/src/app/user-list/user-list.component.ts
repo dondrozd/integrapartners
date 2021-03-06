@@ -10,26 +10,25 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class UserListComponent implements OnInit {
   displayedColumns: string[] = ['firstName', 'lastName', 'email', 'userName', 'status', 'department', 'tools'];
-  users: User[];
+  users: User[] = [];
+  hasError = false;
 
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
-    // this.userService.getUsers().subscribe(
-    //   data => { this.users = data; },
-    // );
     this.userService.getUsers().subscribe(
-      data => {
-        this.users = data;
-      },
+      data => { this.processUsers(data); },
       error => { this.handleError(error); }
-
     );
+  }
+
+  private processUsers(users: User[]): void {
+    this.users = users;
   }
 
   private handleError(error: HttpErrorResponse): void {
     if (error.status === 500) {
-
+      this.hasError = true;
     }
   }
 

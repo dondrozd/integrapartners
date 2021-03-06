@@ -10,11 +10,6 @@ describe('UserService', () => {
   let httpTestingController: HttpTestingController;
   let httpClient: HttpClient;
 
-  const users: User[] = [
-    {id: 1, firstName: 'fnA', lastName: 'lnA', email: 'a@dn.com', userName: 'unA', status: 'A', department: 'depA'},
-    {id: 2, firstName: 'fnB', lastName: 'lnB', email: 'b@dn.com', userName: 'unB', status: 'A', department: 'depB'},
-  ];
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { User } from './user';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +20,14 @@ export class UserService {
   }
 
   addUser(user: User): Observable<User> {
-    return this.http.post<User>(this.usersUrl + '/' + user.id, user);
+    return this.http.post<User>(this.usersUrl, user);
   }
 
-  saveUser(user: User): Observable<User> {
+  updateUser(user: User): Observable<User> {
     return this.http.put<User>(this.usersUrl + '/' + user.id, user);
   }
 
-  deleteUser(user: User): Observable<User> {
-    return this.http.delete<User>(this.usersUrl + '/' + user.id);
+  deleteUser(id: number): Observable<User> {
+    return this.http.delete<User>(this.usersUrl + '/' + id);
   }
 }

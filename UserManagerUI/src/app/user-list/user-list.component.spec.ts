@@ -2,7 +2,7 @@ import { UserService } from './../user-service/user.service';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserListComponent } from './user-list.component';
-import { User } from '../user-service/user';
+import { User } from '../models/user';
 import { of } from 'rxjs';
 
 describe('UserListComponent', () => {
@@ -11,7 +11,7 @@ describe('UserListComponent', () => {
   let userServiceSpy: jasmine.SpyObj<UserService>;
   let httpClientSpy: { get: jasmine.Spy };
 
-  let users: User[] = [
+  const users: User[] = [
     {id: 1, firstName: 'fnA', lastName: 'lnA', email: 'a@dn.com', userName: 'unA', status: 'A', department: 'depA'},
     {id: 2, firstName: 'fnB', lastName: 'lnB', email: 'b@dn.com', userName: 'unB', status: 'A', department: 'depB'},
   ];

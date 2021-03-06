@@ -1,5 +1,5 @@
 import { UserService } from './../user-service/user.service';
-import { User } from './../user-service/user';
+import { User } from './../models/user';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -31,9 +31,11 @@ export class UserComponent implements OnInit {
   }
 
   onClickSave(): void {
-    console.log('save');
-
-
+    if (this.newMode) {
+      console.log('save new user');
+    } else {
+      console.log('save existing user');
+    }
     this.returnToUserList();
   }
 

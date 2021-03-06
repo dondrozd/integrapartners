@@ -1,0 +1,25 @@
+body {
+  background-image: url(../../assets/img/404.png);
+  background-repeat: no-repeat;
+}
+
+aside {
+  position: absolute;
+  top: 0;
+  left: 250px;
+  width: 240px;
+}
+
+img {
+  margin-left: -100px;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+.label {
+  font-size: 100px;
+}

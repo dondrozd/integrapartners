@@ -1,0 +1,23 @@
+header {
+  position: relative;
+}
+
+header aside {
+  position: absolute;
+  top:0;
+  right:0;
+}
+
+header aside button {
+  margin-right: 10px;
+}
+
+
+section {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+mat-form-field.mat-form-field {
+  width: 100%;
+}

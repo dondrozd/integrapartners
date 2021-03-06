@@ -1,50 +1,59 @@
-package main
+package resources
 
 import (
 	"log"
 	"net/http"
+	"server/daos"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 type UserResource struct {
-	UserDAO *UserDAO
+	UserDAO *daos.UserDAO
 }
 
-func RegisterNewUserResource(userDAO *UserDAO, server *echo.Echo) UserResource {
+type EchoContextInterface interface {
+	Bind(i interface{}) error
+	String(code int, s string) error
+	JSON(code int, i interface{}) error
+	Param(name string) string
+}
+
+func RegisterNewUserResource(userDAO *daos.UserDAO, server *echo.Echo) *UserResource {
 	userResource := new(UserResource)
 	userResource.UserDAO = userDAO
 	userResource.initialize(server)
-	return *userResource
+	return userResource
 }
 
-func (resorce *UserResource) initialize(server *echo.Echo) {
-	server.GET("/api/users", resorce.getUsers)
-	server.GET("/api/users/:id", resorce.getUser)
-	server.POST("/api/users", resorce.addUser)
-	server.DELETE("/api/users/:id", resorce.deleteUser)
-	server.PUT("/api/users/:id", resorce.updateUser)
+func (resource *UserResource) initialize(server *echo.Echo) {
+	server.GET("/api/users", func(context echo.Context) error { return resource.GetUsers(context) })
+	server.GET("/api/users/:id", func(context echo.Context) error { return resource.GetUser(context) })
+	server.POST("/api/users", func(context echo.Context) error { return resource.AddUser(context) })
+	server.DELETE("/api/users/:id", func(context echo.Context) error { return resource.DeleteUser(context) })
+	server.PUT("/api/users/:id", func(context echo.Context) error { return resource.UpdateUser(context) })
 }
 
-func (a *UserResource) addUser(context echo.Context) error {
+func (resource *UserResource) AddUser(context EchoContextInterface) error {
 	log.Println("add user")
-	user := new(User)
+	user := new(daos.User)
 	if err := context.Bind(user); err != nil {
 		log.Println("Couldn't process new user", err.Error())
 		return context.String(http.StatusUnprocessableEntity, "Couldn't process new user")
 	}
 
-	if err := a.UserDAO.InsertUser(user); err != nil {
+	if err := resource.UserDAO.InsertUser(user); err != nil {
 		log.Println("Error creating user:", err.Error())
 		return context.String(http.StatusInternalServerError, "Error adding user")
 	}
 	return context.String(http.StatusInternalServerError, "user added")
 }
 
-func (a *UserResource) getUsers(context echo.Context) error {
+func (resource *UserResource) GetUsers(context EchoContextInterface) error {
 	log.Println("get users")
-	users, err := a.UserDAO.GetUsers()
+
+	users, err := resource.UserDAO.GetUsers()
 
 	if err != nil {
 		log.Println("Error retrieving users:", err.Error())
@@ -54,7 +63,7 @@ func (a *UserResource) getUsers(context echo.Context) error {
 	return context.JSON(http.StatusOK, users)
 }
 
-func (a *UserResource) getUser(context echo.Context) error {
+func (resource *UserResource) GetUser(context EchoContextInterface) error {
 	stringID := context.Param("id")
 	log.Println("get user: ", stringID)
 	id, err := strconv.Atoi(stringID)
@@ -62,7 +71,7 @@ func (a *UserResource) getUser(context echo.Context) error {
 		log.Println("Error retrieving user:", stringID, err.Error())
 		return context.String(http.StatusUnprocessableEntity, "bad id")
 	}
-	user, err := a.UserDAO.GetUser(id)
+	user, err := resource.UserDAO.GetUser(id)
 	if err != nil {
 		log.Println("Error retrieving user:", stringID, err.Error())
 		return context.String(http.StatusInternalServerError, "Error retrieving users")
@@ -70,7 +79,7 @@ func (a *UserResource) getUser(context echo.Context) error {
 	return context.JSON(http.StatusOK, user)
 }
 
-func (a *UserResource) deleteUser(context echo.Context) error {
+func (resource *UserResource) DeleteUser(context EchoContextInterface) error {
 	stringID := context.Param("id")
 	log.Println("delete user: ", stringID)
 	id, err := strconv.Atoi(stringID)
@@ -79,7 +88,7 @@ func (a *UserResource) deleteUser(context echo.Context) error {
 		return context.String(http.StatusUnprocessableEntity, "bad id")
 	}
 
-	if err = a.UserDAO.DeleteUser(id); err != nil {
+	if err = resource.UserDAO.DeleteUser(id); err != nil {
 		log.Println("error deleting user: ", stringID, err.Error())
 		return context.String(http.StatusInternalServerError, "something went wrong running the delete query")
 	}
@@ -87,7 +96,7 @@ func (a *UserResource) deleteUser(context echo.Context) error {
 	return context.String(http.StatusOK, "deleted")
 }
 
-func (a *UserResource) updateUser(context echo.Context) error {
+func (resource *UserResource) UpdateUser(context echo.Context) error {
 	stringID := context.Param("id")
 	log.Println("update user: ", stringID)
 	id, err := strconv.Atoi(stringID)
@@ -96,18 +105,18 @@ func (a *UserResource) updateUser(context echo.Context) error {
 		log.Println("Error retrieving users:", err.Error())
 		return context.String(http.StatusUnprocessableEntity, "bad id: "+stringID)
 	}
-	user := new(User)
+	user := new(daos.User)
 	if err := context.Bind(user); err != nil {
 		log.Println("Couldn't process user object", err.Error())
 		return context.String(http.StatusUnprocessableEntity, "Couldn't process new user "+stringID)
 	}
 
-	if err = a.UserDAO.UpdateUser(id, user); err != nil {
+	if err = resource.UserDAO.UpdateUser(id, user); err != nil {
 		log.Println("Couldn't update user", err.Error())
 		return context.String(http.StatusInternalServerError, "Couldn't update user "+stringID)
 	}
 
-	updatedUser, err := a.UserDAO.GetUser(id)
+	updatedUser, err := resource.UserDAO.GetUser(id)
 	if err != nil {
 		return context.String(http.StatusInternalServerError, "error retrieving user during update "+stringID)
 	}

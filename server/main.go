@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"server/daos"
 
 	_ "github.com/lib/pq"
 
@@ -12,7 +13,7 @@ import (
 
 type App struct {
 	Server  *echo.Echo
-	UserDAO *UserDAO
+	UserDAO *daos.UserDAO
 }
 
 func main() {
@@ -30,7 +31,7 @@ func (a *App) Initialize(user, password, dbname string) {
 	}
 	a.Server = echo.New()
 
-	a.UserDAO = new(UserDAO)
+	a.UserDAO = new(daos.UserDAO)
 	a.UserDAO.Init(db)
 }
 

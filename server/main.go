@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"server/daos"
+	"server/controller"
+	"server/dao"
 
 	_ "github.com/lib/pq"
 
@@ -13,7 +14,7 @@ import (
 
 type App struct {
 	Server  *echo.Echo
-	UserDAO *daos.UserDAO
+	UserDAO *dao.UserDAO
 }
 
 func main() {
@@ -31,12 +32,12 @@ func (a *App) Initialize(user, password, dbname string) {
 	}
 	a.Server = echo.New()
 
-	a.UserDAO = new(daos.UserDAO)
+	a.UserDAO = new(dao.UserDAO)
 	a.UserDAO.Init(db)
 }
 
 func (a *App) Run() {
 	a.Server.Static("/", "assets")
-	RegisterNewUserResource(a.UserDAO, a.Server)
+	controller.RegisterNewUserResource(a.UserDAO, a.Server)
 	a.Server.Logger.Fatal(a.Server.Start(":1323"))
 }

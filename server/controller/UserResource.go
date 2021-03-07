@@ -1,20 +1,20 @@
-package main
+package controller
 
 import (
 	"log"
 	"net/http"
-	"server/daos"
-	"server/models"
+	"server/dao"
+	"server/model"
 	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
 
 type UserResource struct {
-	UserDAO *daos.UserDAO
+	UserDAO *dao.UserDAO
 }
 
-func RegisterNewUserResource(userDAO *daos.UserDAO, server *echo.Echo) UserResource {
+func RegisterNewUserResource(userDAO *dao.UserDAO, server *echo.Echo) UserResource {
 	userResource := new(UserResource)
 	userResource.UserDAO = userDAO
 	userResource.initialize(server)
@@ -31,7 +31,7 @@ func (resorce *UserResource) initialize(server *echo.Echo) {
 
 func (a *UserResource) addUser(context echo.Context) error {
 	log.Println("add user")
-	user := new(models.User)
+	user := new(model.User)
 	if err := context.Bind(user); err != nil {
 		log.Println("Couldn't process new user", err.Error())
 		return context.String(http.StatusUnprocessableEntity, "Couldn't process new user")
@@ -98,7 +98,7 @@ func (a *UserResource) updateUser(context echo.Context) error {
 		log.Println("Error retrieving users:", err.Error())
 		return context.String(http.StatusUnprocessableEntity, "bad id: "+stringID)
 	}
-	user := new(models.User)
+	user := new(model.User)
 	if err := context.Bind(user); err != nil {
 		log.Println("Couldn't process user object", err.Error())
 		return context.String(http.StatusUnprocessableEntity, "Couldn't process new user "+stringID)

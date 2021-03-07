@@ -53,7 +53,7 @@ func (dao *UserDAO) GetUser(id int) (User, error) {
 
 func (dao *UserDAO) InsertUser(user *User) error {
 	var err error
-	_, err = dao.DB.Exec("INSERT INTO users (user_id, first_name, last_name, email, user_name, user_status) VALUES ($1, $2, $3, $4, $5, $6)", user.ID, user.FirstName, user.LastName, user.Email, user.UserName, user.Status)
+	_, err = dao.DB.Exec("INSERT INTO users (user_id, first_name, last_name, email, user_name, user_status) VALUES (nextval('USER_ID_SEQ'), $1, $2, $3, $4, $5)", user.FirstName, user.LastName, user.Email, user.UserName, user.Status)
 	return err
 }
 

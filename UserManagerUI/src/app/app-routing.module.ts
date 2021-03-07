@@ -8,8 +8,9 @@ const routes: Routes = [
   {path: 'users', component: UserListComponent},
   {path: 'user', component: UserComponent},
   {path: 'user/:id', component: UserComponent},
+  {path: 'error/:type', component: ErrorComponent},
   {path: '', redirectTo: '/users', pathMatch: 'full'},
-  {path: '**', component: ErrorComponent}
+  {path: '**', redirectTo: '/error/404'}
 ];
 
 @NgModule({

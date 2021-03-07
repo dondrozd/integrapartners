@@ -10,6 +10,9 @@
       <button mat-stroked-button color="primary" (click)="onClickCancel()">
         <mat-icon aria-hidden="false" aria-label="Add User">cancel</mat-icon>
       </button>
+      <button mat-stroked-button color="primary" (click)="onClickDelete()" *ngIf="!newMode">
+        <mat-icon aria-hidden="false" aria-label="Delete User">delete</mat-icon>
+      </button>
     </aside>
   </header>
   <section>

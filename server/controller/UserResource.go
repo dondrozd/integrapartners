@@ -41,7 +41,7 @@ func (a *UserResource) addUser(context echo.Context) error {
 		log.Println("Error creating user:", err.Error())
 		return context.String(http.StatusInternalServerError, "Error adding user")
 	}
-	return context.String(http.StatusInternalServerError, "user added")
+	return context.NoContent(204)
 }
 
 func (a *UserResource) getUsers(context echo.Context) error {
@@ -86,7 +86,7 @@ func (a *UserResource) deleteUser(context echo.Context) error {
 		return context.String(http.StatusInternalServerError, "something went wrong running the delete query")
 	}
 
-	return context.String(http.StatusOK, "deleted")
+	return context.NoContent(204)
 }
 
 func (a *UserResource) updateUser(context echo.Context) error {

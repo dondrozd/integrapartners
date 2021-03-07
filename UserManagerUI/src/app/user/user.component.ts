@@ -3,7 +3,6 @@ import { User } from './../models/user';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user',
@@ -41,38 +40,43 @@ export class UserComponent implements OnInit {
 
   onClickSave(): void {
     if (this.newMode) {
-      console.log('save new user');
       this.saveNewUser();
     } else {
-      console.log('save existing user');
       this.saveExistingUser();
     }
-    this.returnToUserList();
   }
 
   saveNewUser(): void {
+    console.log('save new user');
     this.userService.addUser(this.user).subscribe(
-      data => { this.user = data; },
+      () => { console.log('save new user completed'); this.returnToUserList(); },
       error => { this.handleError(error); }
     );
   }
 
   saveExistingUser(): void {
+    console.log('save existing user');
     this.userService.updateUser(this.user).subscribe(
-      data => { this.user = data; },
+      () => { console.log('save existing user completed'); this.returnToUserList(); },
+      error => { this.handleError(error); }
+    );
+
+  }
+
+  onClickDelete(): void {
+    this.userService.deleteUser(this.userId).subscribe(
+      () => { console.log('delete completed');
+       this.returnToUserList(); },
       error => { this.handleError(error); }
     );
   }
-
 
   onClickCancel(): void {
     console.log('cancel');
     this.returnToUserList();
   }
 
-
   private returnToUserList(): void {
     this.router.navigate(['users']);
   }
-
 }

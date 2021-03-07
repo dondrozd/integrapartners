@@ -16,6 +16,7 @@ export class UserListComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
+    console.log('loading users');
     this.userService.getUsers().subscribe(
       data => { this.processUsers(data); },
       error => { this.handleError(error); }

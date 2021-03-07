@@ -19,8 +19,10 @@ func (dao *UserDAO) GetUsers() ([]model.User, error) {
 	var err error
 
 	rows, err := dao.DB.Query("select user_id, first_name, last_name, email, user_name, user_status, department from users")
+	defer rows.Close()
 
 	if err != nil {
+		log.Println("error in query", err.Error())
 		return users, err
 	}
 
@@ -28,6 +30,7 @@ func (dao *UserDAO) GetUsers() ([]model.User, error) {
 		var user model.User
 		if err := rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.UserName, &user.Status, &user.Department); err != nil {
 			log.Println("error mapping user data from db", err.Error())
+			return nil, err
 		}
 		users = append(users, user)
 	}
@@ -38,6 +41,7 @@ func (dao *UserDAO) GetUser(id int) (model.User, error) {
 	var user model.User
 	var err error
 	rows, err := dao.DB.Query("select user_id, first_name, last_name, email, user_name, user_status, department from users where user_id = $1", id)
+	defer rows.Close()
 
 	if err != nil {
 		log.Println("Error retrieving users:", err.Error())
@@ -47,6 +51,7 @@ func (dao *UserDAO) GetUser(id int) (model.User, error) {
 	for rows.Next() {
 		if err := rows.Scan(&user.ID, &user.FirstName, &user.LastName, &user.Email, &user.UserName, &user.Status, &user.Department); err != nil {
 			log.Println("error mapping user data from db", err.Error())
+			return user, err
 		}
 	}
 	return user, err
@@ -55,7 +60,7 @@ func (dao *UserDAO) GetUser(id int) (model.User, error) {
 func (dao *UserDAO) InsertUser(user *model.User) error {
 	var err error
 	if user.Department != nil {
-		_, err = dao.DB.Exec("INSERT INTO users (user_id, first_name, last_name, email, user_name, user_status, department) VALUES (nextval('USER_ID_SEQ'), $1, $2, $3, $4, $5, $6)", user.FirstName, user.LastName, user.Email, user.UserName, user.Status)
+		_, err = dao.DB.Exec("INSERT INTO users (user_id, first_name, last_name, email, user_name, user_status, department) VALUES (nextval('USER_ID_SEQ'), $1, $2, $3, $4, $5, $6)", user.FirstName, user.LastName, user.Email, user.UserName, user.Status, user.Department)
 	} else {
 		_, err = dao.DB.Exec("INSERT INTO users (user_id, first_name, last_name, email, user_name, user_status) VALUES (nextval('USER_ID_SEQ'), $1, $2, $3, $4, $5)", user.FirstName, user.LastName, user.Email, user.UserName, user.Status)
 	}

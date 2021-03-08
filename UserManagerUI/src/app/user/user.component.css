@@ -5,19 +5,27 @@ header {
 header aside {
   position: absolute;
   top:0;
-  right:0;
+  right:10px;
 }
 
 header aside button {
   margin-right: 10px;
 }
 
-
 section {
-  padding-left: 20px;
-  padding-right: 20px;
+  background-color: #f7f6de;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border:1px solid gray;
+  border-radius: 5px;
 }
 
 mat-form-field.mat-form-field {
   width: 100%;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  border-radius: 5px;
 }

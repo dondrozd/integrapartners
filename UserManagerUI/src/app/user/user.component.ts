@@ -3,6 +3,7 @@ import { User } from './../models/user';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-user',
@@ -17,7 +18,8 @@ export class UserComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService) { }
+    private userService: UserService,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.route.snapshot.paramMap.has('id')) {
@@ -33,7 +35,11 @@ export class UserComponent implements OnInit {
   }
 
   private handleError(error: HttpErrorResponse): void {
-    if (error.status === 500) {
+    if (error.status === 422 || error.status === 400) {
+      this._snackBar.open('Invalid inputs', 'OK', {
+        duration: 2000,
+      });
+    } else if (error.status === 500) {
       this.router.navigate(['error', '500']);
     }
   }
@@ -49,7 +55,7 @@ export class UserComponent implements OnInit {
   saveNewUser(): void {
     console.log('save new user');
     this.userService.addUser(this.user).subscribe(
-      () => { console.log('save new user completed'); this.returnToUserList(); },
+      () => { this.returnToUserList(); },
       error => { this.handleError(error); }
     );
   }
@@ -57,7 +63,7 @@ export class UserComponent implements OnInit {
   saveExistingUser(): void {
     console.log('save existing user');
     this.userService.updateUser(this.user).subscribe(
-      () => { console.log('save existing user completed'); this.returnToUserList(); },
+      () => { this.returnToUserList(); },
       error => { this.handleError(error); }
     );
 
@@ -65,8 +71,7 @@ export class UserComponent implements OnInit {
 
   onClickDelete(): void {
     this.userService.deleteUser(this.userId).subscribe(
-      () => { console.log('delete completed');
-       this.returnToUserList(); },
+      () => { this.returnToUserList(); },
       error => { this.handleError(error); }
     );
   }

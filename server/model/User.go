@@ -9,3 +9,29 @@ type User struct {
 	Status     string  `json:"status"     query:"status"`
 	Department *string `json:"department" query:"department"`
 }
+
+func (u *User) IsValid() bool {
+	return validateStandardSize(u.FirstName) &&
+		validateStandardSize(u.LastName) &&
+		validateStandardSize(u.Email) &&
+		validateStandardSize(u.UserName) &&
+		validateStatus(u.Status) &&
+		validateNullableWithSize(u.Department)
+}
+
+func validateStandardSize(value string) bool {
+	size := len(value)
+	return size > 0 && size <= 255
+}
+
+func validateNullableWithSize(value *string) bool {
+	if value != nil {
+		size := len(*value)
+		return size > 0 && size <= 255
+	}
+	return true
+}
+
+func validateStatus(value string) bool {
+	return value == "I" || value == "A" || value == "T"
+}

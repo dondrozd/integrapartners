@@ -13,8 +13,8 @@ import (
 )
 
 type App struct {
-	Server  *echo.Echo
-	UserDAO *dao.UserDAO
+	Server *echo.Echo
+	DB     *sql.DB
 }
 
 func main() {
@@ -26,18 +26,17 @@ func main() {
 func (a *App) Initialize(user, password, dbname string) {
 	connectionString := fmt.Sprintf("user=%s password=%s dbname=%s sslmode=disable", user, password, dbname)
 	var err error
-	db, err := sql.Open("postgres", connectionString)
+	a.DB, err = sql.Open("postgres", connectionString)
 	if err != nil {
 		log.Fatal(err)
 	}
 	a.Server = echo.New()
-
-	a.UserDAO = new(dao.UserDAO)
-	a.UserDAO.Init(db)
 }
 
 func (a *App) Run() {
 	a.Server.Static("/", "assets")
-	controller.RegisterNewUserResource(a.UserDAO, a.Server)
+	userDao := new(dao.UserDAO)
+	userDao.Init(a.DB)
+	controller.RegisterNewUserResource(userDao, a.Server)
 	a.Server.Logger.Fatal(a.Server.Start(":1323"))
 }

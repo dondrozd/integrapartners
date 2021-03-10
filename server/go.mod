@@ -3,6 +3,7 @@ module server
 go 1.16
 
 require (
+	github.com/Masterminds/squirrel v1.5.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/labstack/echo/v4 v4.2.0
 	github.com/lib/pq v1.9.0

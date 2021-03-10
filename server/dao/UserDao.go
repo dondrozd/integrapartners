@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"log"
 	"server/model"
+
+	sq "github.com/Masterminds/squirrel"
 )
 
 type UserDAO struct {
@@ -18,7 +20,7 @@ func (dao *UserDAO) GetUsers() ([]model.User, error) {
 	var users []model.User
 	var err error
 
-	rows, err := dao.DB.Query("select user_id, first_name, last_name, email, user_name, user_status, department from users")
+	rows, err := sq.Select("user_id", "first_name", "last_name", "email", "user_name", "user_status", "department").From("users").RunWith(dao.DB).Query()
 	defer rows.Close()
 
 	if err != nil {

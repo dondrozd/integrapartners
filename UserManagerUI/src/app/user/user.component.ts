@@ -19,7 +19,7 @@ export class UserComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private userService: UserService,
-    private _snackBar: MatSnackBar) { }
+    private snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
     if (this.route.snapshot.paramMap.has('id')) {
@@ -36,7 +36,7 @@ export class UserComponent implements OnInit {
 
   private handleError(error: HttpErrorResponse): void {
     if (error.status === 422 || error.status === 400) {
-      this._snackBar.open('Invalid inputs', 'OK', {
+      this.snackBar.open('Invalid inputs', 'OK', {
         duration: 2000,
       });
     } else if (error.status === 500) {
@@ -63,8 +63,14 @@ export class UserComponent implements OnInit {
   saveExistingUser(): void {
     console.log('save existing user');
     this.userService.updateUser(this.user).subscribe(
-      () => { this.returnToUserList(); },
-      error => { this.handleError(error); }
+      () => {
+        debugger;
+        this.returnToUserList();
+      },
+      error => {
+        debugger;
+        this.handleError(error);
+      }
     );
 
   }
